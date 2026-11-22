@@ -4,6 +4,7 @@ import { ProcessTimeline } from "@/components/process-timeline";
 import { RecordSheet } from "@/components/record-sheet";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
+import { highlightQuotes } from "./score-evidence-view";
 import { stageLabels, type Application, type Stage } from "./model";
 
 type RecordEvent = { stage: Stage; at: string; note?: string };
@@ -21,6 +22,8 @@ export function ApplicationRecord({
   statusRef,
   children,
   footer,
+  aside,
+  answerHighlights,
 }: {
   application: Pick<
     Application,
@@ -32,6 +35,10 @@ export function ApplicationRecord({
   statusRef?: Ref<HTMLSpanElement>;
   children?: ReactNode;
   footer?: ReactNode;
+  /** Employer-only supporting column (score evidence), placed beside the sheet. */
+  aside?: ReactNode;
+  /** Employer-only: quotes the score evidence found in the answer. */
+  answerHighlights?: string[];
 }) {
   const candidate = audience === "candidate";
   const title = candidate ? application.jobTitle : application.candidateName;
@@ -64,7 +71,8 @@ export function ApplicationRecord({
           )}
         </div>
       </header>
-      <div className="recruiting-layout">
+      <div className={aside ? "recruiting-layout has-aside" : "recruiting-layout"}>
+        {aside ? <div className="recruiting-aside">{aside}</div> : null}
         <RecordSheet
           label={candidate ? "Twoja wysłana aplikacja" : "Materiały kandydata"}
           sections={[
@@ -74,7 +82,11 @@ export function ApplicationRecord({
               content: (
                 <>
                   <h3>Przesłana aplikacja</h3>
-                  <p>{application.answer}</p>
+                  <p>
+                    {answerHighlights?.length
+                      ? highlightQuotes(application.answer, answerHighlights)
+                      : application.answer}
+                  </p>
                 </>
               ),
             },

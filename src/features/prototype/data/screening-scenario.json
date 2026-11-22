@@ -1,0 +1,711 @@
+{
+  "people": [
+    {
+      "id": "candidate-s01",
+      "role": "candidate",
+      "name": "Ewa Sadowska",
+      "headline": "Product Manager · automatyzacja finansów",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Ewa Sadowska — Product Manager\n2021–2026: firma logistyczna, produkt do obsługi faktur dostawców. Pilot automatycznego dopasowania faktur do zamówień u 4 klientów.\n2018–2021: analityczka procesów w dziale księgowości.\nUmiejętności: discovery, mapowanie procesów, praca z księgowością, kryteria odbioru.",
+      "exampleScore": 74,
+      "exampleSummary": "Doświadczenie w automatyzacji procesów finansowych. Warto dopytać o skalę wdrożenia i współpracę z inżynierami.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s02",
+      "role": "candidate",
+      "name": "Piotr Lis",
+      "headline": "AI Transformation Leader",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Piotr Lis — AI Transformation Leader\n2020–2026: lider transformacji AI w grupie usługowej. Programy szkoleniowe, strategia AI, komitet innowacji.\nCertyfikaty: prompt engineering, zarządzanie zmianą.\nNarzędzia: ChatGPT, Copilot, Claude, Gemini, Midjourney, Zapier i inne.",
+      "exampleScore": 91,
+      "exampleSummary": "Bardzo dobre dopasowanie do opisu roli: strategia AI, praca z interesariuszami, szerokie doświadczenie we wdrożeniach.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s03",
+      "role": "candidate",
+      "name": "Katarzyna Wróbel",
+      "headline": "Product Owner · back office w bankowości",
+      "bio": "",
+      "location": "Kraków",
+      "cv": "Katarzyna Wróbel — Product Owner\n2022–2026: bank, zespół back office. Discovery i rozwój narzędzi do obsługi reklamacji i zwrotów.\n2019–2022: specjalistka ds. procesów operacyjnych.\nUmiejętności: wywiady z użytkownikami, priorytetyzacja, współpraca z działem ryzyka.",
+      "exampleScore": 63,
+      "exampleSummary": "Doświadczenie w bankowości i procesach operacyjnych. Brakuje mierzalnych efektów pracy.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s04",
+      "role": "candidate",
+      "name": "Rafał Bielecki",
+      "headline": "Senior Product Manager · platforma danych",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Rafał Bielecki — Senior Product Manager\n2019–2026: platforma danych w firmie ubezpieczeniowej. Roadmapa, budżet zespołu, raportowanie do zarządu.\nUmiejętności: zarządzanie produktem, analityka, OKR, współpraca z data science.",
+      "exampleScore": 86,
+      "exampleSummary": "Silne wyniki biznesowe i doświadczenie w produktach opartych na danych. Dobre dopasowanie do roli lidera produktu.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s05",
+      "role": "candidate",
+      "name": "Agnieszka Mazur",
+      "headline": "Product Manager · fintech",
+      "bio": "",
+      "location": "Wrocław",
+      "cv": "Agnieszka Mazur — Product Manager\n2021–2026: fintech, produkt do rozliczeń płatności dla firm. Automatyzacja uzgadniania wyciągów bankowych.\n2018–2021: konsultantka wdrożeń systemów księgowych.\nUmiejętności: discovery, eksperymenty, specyfikacja z inżynierami, praca z księgowymi.",
+      "exampleScore": 79,
+      "exampleSummary": "Doświadczenie w automatyzacji rozliczeń i pracy z zespołem inżynierskim. Warto porozmawiać o skali klientów.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s06",
+      "role": "candidate",
+      "name": "Michał Krawczyk",
+      "headline": "Machine Learning Engineer",
+      "bio": "",
+      "location": "Gdańsk",
+      "cv": "Michał Krawczyk — Machine Learning Engineer\n2020–2026: trenowanie i wdrażanie modeli NLP, MLOps, optymalizacja kosztów inferencji.\nUmiejętności: Python, PyTorch, fine-tuning, ewaluacja modeli.",
+      "exampleScore": 58,
+      "exampleSummary": "Mocne kompetencje techniczne w ML. Doświadczenie produktowe ograniczone.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s07",
+      "role": "candidate",
+      "name": "Natalia Pawlak",
+      "headline": "Product Manager · narzędzia marketingowe",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Natalia Pawlak — Product Manager\n2022–2026: SaaS dla marketingu, generator treści z AI.\n2019–2022: content lead.\nUmiejętności: discovery, testy z użytkownikami, priorytetyzacja, metryki produktu.",
+      "exampleScore": 68,
+      "exampleSummary": "Doświadczenie produktowe w AI, ale w innej branży. Warto dopytać o zainteresowanie procesami finansowymi.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s08",
+      "role": "candidate",
+      "name": "Julia Kamińska",
+      "headline": "Specjalistka ds. automatyzacji · e-commerce",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Julia Kamińska — specjalistka ds. automatyzacji\n2022–2026: e-commerce, automatyzacje dla działu finansów i obsługi klienta (n8n, arkusze, API sklepu).\n2020–2022: obsługa klienta.\nUmiejętności: n8n, webhooki, JSON, dokumentacja procesów.",
+      "exampleScore": 77,
+      "exampleSummary": "Praktyczne doświadczenie z automatyzacjami w finansach. Warto porozmawiać o integracjach przez API.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s09",
+      "role": "candidate",
+      "name": "Bartosz Zając",
+      "headline": "Ekspert AI i automatyzacji",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Bartosz Zając — konsultant AI\n2021–2026: własna działalność, szkolenia i doradztwo z AI dla firm.\nNarzędzia: ChatGPT, Copilot, Make, Zapier, n8n, Notion AI.",
+      "exampleScore": 92,
+      "exampleSummary": "Bardzo dobre dopasowanie: szerokie doświadczenie z narzędziami automatyzacji i AI, szkolenia zespołów.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s10",
+      "role": "candidate",
+      "name": "Weronika Szymańska",
+      "headline": "Specjalistka HR operations",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Weronika Szymańska — HR operations\n2021–2026: firma produkcyjna, procesy kadrowe i onboarding.\nUmiejętności: Make, Google Workspace, opisywanie procesów, szkolenia.",
+      "exampleScore": 61,
+      "exampleSummary": "Doświadczenie w HR, mniej w finansach. Brakuje mierzalnych efektów.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s11",
+      "role": "candidate",
+      "name": "Kamil Dąbrowski",
+      "headline": "Koordynator RPA",
+      "bio": "",
+      "location": "Łódź",
+      "cv": "Kamil Dąbrowski — koordynator RPA\n2019–2026: centrum usług wspólnych, dział automatyzacji procesów (RPA).\nUmiejętności: UiPath, raportowanie, koordynacja projektów.",
+      "exampleScore": 84,
+      "exampleSummary": "Duża skala automatyzacji i wymierne oszczędności. Dobre dopasowanie do roli.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s12",
+      "role": "candidate",
+      "name": "Monika Lewandowska",
+      "headline": "Specjalistka ds. operacji · logistyka",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Monika Lewandowska — specjalistka ds. operacji\n2020–2026: firma logistyczna, obsługa reklamacji i rozliczeń z przewoźnikami.\nUmiejętności: Zapier, API przewoźników, webhooki, arkusze, instrukcje dla zespołu.",
+      "exampleScore": 73,
+      "exampleSummary": "Doświadczenie w operacjach i automatyzacji. Warto dopytać o pracę z danymi finansowymi.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s13",
+      "role": "candidate",
+      "name": "Paweł Wójcik",
+      "headline": "Senior Backend Developer",
+      "bio": "",
+      "location": "Poznań",
+      "cv": "Paweł Wójcik — Senior Backend Developer\n2017–2026: mikroserwisy, integracje płatności, architektura systemów.\nUmiejętności: Java, Kotlin, Kafka, AWS.",
+      "exampleScore": 66,
+      "exampleSummary": "Bardzo mocne kompetencje integracyjne. Warto porozmawiać o oczekiwaniach co do roli i trybu pracy.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s14",
+      "role": "candidate",
+      "name": "Zuzanna Kaczmarek",
+      "headline": "Team Leaderka obsługi klienta",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Zuzanna Kaczmarek — Team Leaderka obsługi klienta\n2019–2026: zespół 14 konsultantów, jakość obsługi, szkolenia.\nUmiejętności: ChatGPT, bazy wiedzy, coaching zespołu.",
+      "exampleScore": 70,
+      "exampleSummary": "Doświadczenie we wdrażaniu AI w zespole i szkoleniach. Warto dopytać o umiejętności techniczne.",
+      "hidden": true
+    },
+    {
+      "id": "candidate-s15",
+      "role": "candidate",
+      "name": "Adam Nowicki",
+      "headline": "Freelancer · automatyzacje dla małych firm",
+      "bio": "",
+      "location": "Warszawa",
+      "cv": "Adam Nowicki — freelancer\n2022–2026: automatyzacje dla biur rachunkowych i małych firm (Make, n8n, API systemów fakturowych).\n2019–2022: asystent w biurze rachunkowym.\nUmiejętności: Make, n8n, JSON, testowanie przepływów.",
+      "exampleScore": 71,
+      "exampleSummary": "Praktyczne automatyzacje w księgowości. Warto dopytać o pracę w większym zespole.",
+      "hidden": true
+    }
+  ],
+  "roleBriefs": {
+    "20000000-0000-4000-8000-000000000001": {
+      "answers": [
+        {
+          "questionId": "q1",
+          "source": "manager",
+          "text": "Pilot automatycznego uzgadniania faktur kosztowych z zamówieniami u trzech klientów. Dziś księgowe robią to ręcznie w arkuszach. W pierwszym kwartale trzeba wybrać zakres pilota, przygotować prototyp i porównać czas obsługi z punktem wyjścia."
+        },
+        {
+          "questionId": "q2",
+          "source": "recruiter_confirmed",
+          "text": "Sama prowadzi discovery i decyduje, który fragment procesu pilotujemy. Pomaga inżynierom ustalić kryteria odbioru, a zespołowi wdrożeń przygotować klientów."
+        },
+        {
+          "questionId": "q3",
+          "source": "none",
+          "text": "",
+          "skipReason": "role_undecided"
+        },
+        {
+          "questionId": "q4",
+          "source": "recruiter_confirmed",
+          "text": "Designerka, dwóch inżynierów i osoba prowadząca wdrożenia u klientów. Priorytety uzgadnia z kierowniczką obszaru finansów."
+        },
+        {
+          "questionId": "q5",
+          "source": "manager",
+          "text": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze."
+        }
+      ],
+      "managerRequest": {
+        "token": "brightlabs-ai-pm-2026-11",
+        "sentAt": "2026-11-02T08:30:00.000Z",
+        "requestedBy": "Karolina Wiśniewska",
+        "answeredAt": "2026-11-02T15:10:00.000Z"
+      },
+      "appliedAt": "2026-11-02T16:00:00.000Z",
+      "criterionLabels": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "labels": [
+          "decyzja, czego nie robić",
+          "wynik w liczbach",
+          "własne vs zespołu",
+          "proces, w którym błąd kosztuje"
+        ]
+      }
+    },
+    "20000000-0000-4000-8000-000000000004": {
+      "answers": [
+        {
+          "questionId": "q1",
+          "source": "recruiter",
+          "text": "Automatyzacja przekazywania zgłoszeń z obsługi klienta do finansów. Dziś zespół ręcznie przepisuje dane z maili do arkusza."
+        },
+        {
+          "questionId": "q2",
+          "source": "recruiter",
+          "text": "Sama buduje automatyzacje w n8n lub Make i uczy zespół z nich korzystać. Przy integracjach pomaga jej inżynier."
+        },
+        {
+          "questionId": "q3",
+          "source": "none",
+          "text": ""
+        },
+        {
+          "questionId": "q4",
+          "source": "recruiter",
+          "text": "Zespoły finansów i obsługi klienta, inżynier od integracji i właściciel procesu."
+        },
+        {
+          "questionId": "q5",
+          "source": "recruiter",
+          "text": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki."
+        }
+      ],
+      "criterionLabels": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "labels": ["zbudował automatyzację", "n8n / Make", "obsługa błędów"]
+      }
+    }
+  },
+  "applications": [
+    {
+      "id": "application-s01",
+      "candidateId": "candidate-s01",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Ewa Sadowska",
+      "cv": "Ewa Sadowska — Product Manager\n2021–2026: firma logistyczna, produkt do obsługi faktur dostawców. Pilot automatycznego dopasowania faktur do zamówień u 4 klientów.\n2018–2021: analityczka procesów w dziale księgowości.\nUmiejętności: discovery, mapowanie procesów, praca z księgowością, kryteria odbioru.",
+      "answer": "Prowadziłam pilot dopasowania faktur kosztowych do zamówień u czterech klientów. Sama zdecydowałam, że w pierwszej wersji nie automatyzujemy wyjątków (faktury korygujące, brak zamówienia), bo to 18% przypadków i największe ryzyko błędnej płatności. Te trafiały do ręcznej kolejki. Czas obsługi faktury spadł z 6 do 2 dni roboczych, a liczba korekt płatności nie wzrosła. Zespół inżynierów zbudował integrację; ja odpowiadałam za zakres, kryteria odbioru i rozmowy z księgowymi.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 74,
+      "summary": "Doświadczenie w automatyzacji procesów finansowych. Warto dopytać o skalę wdrożenia i współpracę z inżynierami.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-03T09:15:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [
+          "Sama zdecydowałam, że w pierwszej wersji nie automatyzujemy wyjątków (faktury korygujące, brak zamówienia), bo to 18% przypadków i największe ryzyko błędnej płatności.",
+          "Czas obsługi faktury spadł z 6 do 2 dni roboczych",
+          "Zespół inżynierów zbudował integrację; ja odpowiadałam za zakres, kryteria odbioru i rozmowy z księgowymi.",
+          "a liczba korekt płatności nie wzrosła"
+        ]
+      }
+    },
+    {
+      "id": "application-s02",
+      "candidateId": "candidate-s02",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Piotr Lis",
+      "cv": "Piotr Lis — AI Transformation Leader\n2020–2026: lider transformacji AI w grupie usługowej. Programy szkoleniowe, strategia AI, komitet innowacji.\nCertyfikaty: prompt engineering, zarządzanie zmianą.\nNarzędzia: ChatGPT, Copilot, Claude, Gemini, Midjourney, Zapier i inne.",
+      "answer": "Jestem pasjonatem AI z wieloletnim doświadczeniem w transformacji cyfrowej. Prowadziłem wdrożenia AI w całej organizacji, zwiększając efektywność zespołów i budując kulturę innowacji. Znam 14 narzędzi AI i łączę myślenie strategiczne z wykonaniem. Doskonale komunikuję się z interesariuszami na każdym poziomie i potrafię przełożyć potrzeby biznesu na rozwiązania oparte na sztucznej inteligencji. Chętnie wniosę tę energię do BrightLabs.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 91,
+      "summary": "Bardzo dobre dopasowanie do opisu roli: strategia AI, praca z interesariuszami, szerokie doświadczenie we wdrożeniach.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-03T11:40:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [null, null, null, null]
+      }
+    },
+    {
+      "id": "application-s03",
+      "candidateId": "candidate-s03",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Katarzyna Wróbel",
+      "cv": "Katarzyna Wróbel — Product Owner\n2022–2026: bank, zespół back office. Discovery i rozwój narzędzi do obsługi reklamacji i zwrotów.\n2019–2022: specjalistka ds. procesów operacyjnych.\nUmiejętności: wywiady z użytkownikami, priorytetyzacja, współpraca z działem ryzyka.",
+      "answer": "W banku prowadziłam discovery procesu zwrotów prowizji. Po rozmowach z 12 osobami z back office zrezygnowałam z planowanego czatbota dla klientów, bo problem był w ręcznym sprawdzaniu dokumentów, a nie w kontakcie z klientem. Zaproponowałam klasyfikację dokumentów z obowiązkową akceptacją człowieka przy kwotach powyżej progu i przekonałam do tego dział ryzyka. Sama ustalałam zakres i kolejność prac; model przygotował zespół danych. Wdrożenie trwa, więc nie mam jeszcze twardych wyników.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 63,
+      "summary": "Doświadczenie w bankowości i procesach operacyjnych. Brakuje mierzalnych efektów pracy.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-03T14:05:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [
+          "zrezygnowałam z planowanego czatbota dla klientów, bo problem był w ręcznym sprawdzaniu dokumentów, a nie w kontakcie z klientem",
+          null,
+          "Sama ustalałam zakres i kolejność prac; model przygotował zespół danych.",
+          "obowiązkową akceptacją człowieka przy kwotach powyżej progu"
+        ]
+      }
+    },
+    {
+      "id": "application-s04",
+      "candidateId": "candidate-s04",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Rafał Bielecki",
+      "cv": "Rafał Bielecki — Senior Product Manager\n2019–2026: platforma danych w firmie ubezpieczeniowej. Roadmapa, budżet zespołu, raportowanie do zarządu.\nUmiejętności: zarządzanie produktem, analityka, OKR, współpraca z data science.",
+      "answer": "Nasz zespół wdrożył model wykrywania błędów w zgłoszeniach szkód, który zmniejszył liczbę błędów o 40% i przyniósł 2 mln zł oszczędności rocznie. Zespół data science zbudował model, a dział operacji zmienił proces obsługi. Byłem częścią tej inicjatywy jako Senior Product Manager platformy danych. Mam doświadczenie w pracy z zarządem i dużymi budżetami.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 86,
+      "summary": "Silne wyniki biznesowe i doświadczenie w produktach opartych na danych. Dobre dopasowanie do roli lidera produktu.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-04T08:20:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [
+          null,
+          {
+            "quote": "zmniejszył liczbę błędów o 40% i przyniósł 2 mln zł oszczędności rocznie",
+            "missing": "punktu wyjścia, od którego liczono zmianę, i tego, co z tego wyniku zrobił sam"
+          },
+          null,
+          "model wykrywania błędów w zgłoszeniach szkód"
+        ]
+      }
+    },
+    {
+      "id": "application-s05",
+      "candidateId": "candidate-s05",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Agnieszka Mazur",
+      "cv": "Agnieszka Mazur — Product Manager\n2021–2026: fintech, produkt do rozliczeń płatności dla firm. Automatyzacja uzgadniania wyciągów bankowych.\n2018–2021: konsultantka wdrożeń systemów księgowych.\nUmiejętności: discovery, eksperymenty, specyfikacja z inżynierami, praca z księgowymi.",
+      "answer": "Odpowiadałam za automatyczne uzgadnianie wyciągów bankowych z należnościami. Zdecydowałam, że zaczynamy od prostych reguł, a nie od modelu, bo księgowe musiały rozumieć, dlaczego system coś dopasował. Model dołożyliśmy dopiero dla przypadków, których reguły nie rozwiązywały. Odsetek ręcznych poprawek spadł z 7% do 2% w ciągu kwartału. Ja ustalałam zakres i mierzyłam wynik, inżynierowie budowali silnik reguł.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 79,
+      "summary": "Doświadczenie w automatyzacji rozliczeń i pracy z zespołem inżynierskim. Warto porozmawiać o skali klientów.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-04T10:45:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [
+          "Zdecydowałam, że zaczynamy od prostych reguł, a nie od modelu, bo księgowe musiały rozumieć, dlaczego system coś dopasował.",
+          "Odsetek ręcznych poprawek spadł z 7% do 2% w ciągu kwartału.",
+          "Ja ustalałam zakres i mierzyłam wynik, inżynierowie budowali silnik reguł.",
+          "automatyczne uzgadnianie wyciągów bankowych z należnościami"
+        ]
+      }
+    },
+    {
+      "id": "application-s06",
+      "candidateId": "candidate-s06",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Michał Krawczyk",
+      "cv": "Michał Krawczyk — Machine Learning Engineer\n2020–2026: trenowanie i wdrażanie modeli NLP, MLOps, optymalizacja kosztów inferencji.\nUmiejętności: Python, PyTorch, fine-tuning, ewaluacja modeli.",
+      "answer": "Od sześciu lat trenuję i wdrażam modele językowe. Ostatnio przeprowadziłem fine-tuning modelu do ekstrakcji danych z dokumentów, który osiągnął 94% F1. Szukam roli, w której będę mógł dalej rozwijać modele i infrastrukturę ML. Wolę pracę techniczną niż prowadzenie warsztatów czy rozmów z klientami.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 58,
+      "summary": "Mocne kompetencje techniczne w ML. Doświadczenie produktowe ograniczone.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-04T13:30:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [null, null, null, null]
+      }
+    },
+    {
+      "id": "application-s07",
+      "candidateId": "candidate-s07",
+      "jobId": "20000000-0000-4000-8000-000000000001",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Product Manager",
+      "candidateName": "Natalia Pawlak",
+      "cv": "Natalia Pawlak — Product Manager\n2022–2026: SaaS dla marketingu, generator treści z AI.\n2019–2022: content lead.\nUmiejętności: discovery, testy z użytkownikami, priorytetyzacja, metryki produktu.",
+      "answer": "Prowadziłam generator opisów produktów z AI dla sklepów internetowych. Po testach z 9 sklepami zrezygnowałam z automatycznej publikacji: każdy tekst przechodzi przez akceptację człowieka, bo błędny opis to ryzyko zwrotów. Liczba opisów przygotowanych przez jedną osobę w tygodniu wzrosła ze 120 do 310. Sama wybierałam zakres i metryki, design i inżynierowie budowali rozwiązanie. Nie pracowałam dotąd z procesami finansowymi.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 68,
+      "summary": "Doświadczenie produktowe w AI, ale w innej branży. Warto dopytać o zainteresowanie procesami finansowymi.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-05T09:10:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Jeden projekt, w którym kandydat sam zdecydował, czego nie robić, i umie powiedzieć dlaczego. Wynik porównany z punktem wyjścia, w liczbach. Własne decyzje oddzielone od pracy zespołu. Doświadczenie z procesem, w którym błąd kosztuje pieniądze.",
+        "quotes": [
+          "zrezygnowałam z automatycznej publikacji: każdy tekst przechodzi przez akceptację człowieka",
+          "Liczba opisów przygotowanych przez jedną osobę w tygodniu wzrosła ze 120 do 310.",
+          "Sama wybierałam zakres i metryki, design i inżynierowie budowali rozwiązanie.",
+          {
+            "quote": "błędny opis to ryzyko zwrotów",
+            "missing": "procesu, w którym błąd bezpośrednio kosztuje pieniądze, np. płatności"
+          }
+        ]
+      }
+    },
+    {
+      "id": "application-s08",
+      "candidateId": "candidate-s08",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Julia Kamińska",
+      "cv": "Julia Kamińska — specjalistka ds. automatyzacji\n2022–2026: e-commerce, automatyzacje dla działu finansów i obsługi klienta (n8n, arkusze, API sklepu).\n2020–2022: obsługa klienta.\nUmiejętności: n8n, webhooki, JSON, dokumentacja procesów.",
+      "answer": "Zbudowałam w n8n przepływ, który odczytuje faktury z maila, sprawdza je z zamówieniem w sklepie i wpisuje do arkusza finansów. Przypadki bez zamówienia trafiają do ręcznej kolejki z opisem błędu. Napisałam instrukcję i przeszkoliłam 12 osób; przez pierwsze dwa tygodnie poprawiałam przepływ po ich uwagach. Teraz zespół przepisuje ręcznie około 20 faktur tygodniowo zamiast 300.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 77,
+      "summary": "Praktyczne doświadczenie z automatyzacjami w finansach. Warto porozmawiać o integracjach przez API.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-04T09:00:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [
+          "Zbudowałam w n8n przepływ, który odczytuje faktury z maila, sprawdza je z zamówieniem w sklepie i wpisuje do arkusza finansów.",
+          "Umiejętności: n8n, webhooki, JSON",
+          "Przypadki bez zamówienia trafiają do ręcznej kolejki z opisem błędu."
+        ]
+      }
+    },
+    {
+      "id": "application-s09",
+      "candidateId": "candidate-s09",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Bartosz Zając",
+      "cv": "Bartosz Zając — konsultant AI\n2021–2026: własna działalność, szkolenia i doradztwo z AI dla firm.\nNarzędzia: ChatGPT, Copilot, Make, Zapier, n8n, Notion AI.",
+      "answer": "Jestem ekspertem od AI i automatyzacji z doświadczeniem w wielu branżach. Pomagam firmom w transformacji cyfrowej, prowadzę szkolenia z prompt engineeringu i wdrażam rozwiązania oparte na ChatGPT, Copilot, Make i Zapier. Uważam, że AI to przyszłość pracy, i chcę pomóc BrightLabs w pełni wykorzystać jej potencjał. Szybko się uczę i świetnie odnajduję w dynamicznym środowisku.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 92,
+      "summary": "Bardzo dobre dopasowanie: szerokie doświadczenie z narzędziami automatyzacji i AI, szkolenia zespołów.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-04T12:25:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [null, "wdrażam rozwiązania oparte na ChatGPT, Copilot, Make i Zapier", null]
+      }
+    },
+    {
+      "id": "application-s10",
+      "candidateId": "candidate-s10",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Weronika Szymańska",
+      "cv": "Weronika Szymańska — HR operations\n2021–2026: firma produkcyjna, procesy kadrowe i onboarding.\nUmiejętności: Make, Google Workspace, opisywanie procesów, szkolenia.",
+      "answer": "W dziale HR zbudowałam w Make scenariusz, który po podpisaniu umowy zakłada nowej osobie konta, wysyła checklistę do przełożonego i zbiera dokumenty. Najwięcej czasu zajęło mi rozpisanie wyjątków: umowy zlecenia, powroty pracowników, brak podpisu. Dla każdego jest ręczna ścieżka i powiadomienie do osoby z kadr. Pokazałam zespołowi, jak sprawdzać, czy scenariusz zadziałał. Nie mierzyliśmy czasu przed wdrożeniem, więc nie podam liczb.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 61,
+      "summary": "Doświadczenie w HR, mniej w finansach. Brakuje mierzalnych efektów.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-05T08:40:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [
+          "W dziale HR zbudowałam w Make scenariusz, który po podpisaniu umowy zakłada nowej osobie konta, wysyła checklistę do przełożonego i zbiera dokumenty.",
+          "Umiejętności: Make, Google Workspace",
+          "Dla każdego jest ręczna ścieżka i powiadomienie do osoby z kadr."
+        ]
+      }
+    },
+    {
+      "id": "application-s11",
+      "candidateId": "candidate-s11",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Kamil Dąbrowski",
+      "cv": "Kamil Dąbrowski — koordynator RPA\n2019–2026: centrum usług wspólnych, dział automatyzacji procesów (RPA).\nUmiejętności: UiPath, raportowanie, koordynacja projektów.",
+      "answer": "Nasz dział automatyzacji wdrożył ponad 40 robotów RPA w finansach i HR, oszczędzając firmie 10 000 godzin pracy rocznie. Byłem częścią tego zespołu i koordynowałem raportowanie wyników do zarządu. Znam środowisko centrów usług wspólnych i wiem, jak duże znaczenie ma automatyzacja.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 84,
+      "summary": "Duża skala automatyzacji i wymierne oszczędności. Dobre dopasowanie do roli.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-05T11:15:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [
+          {
+            "quote": "Nasz dział automatyzacji wdrożył ponad 40 robotów RPA w finansach i HR",
+            "missing": "automatyzacji, którą zbudował sam"
+          },
+          "Umiejętności: UiPath",
+          null
+        ]
+      }
+    },
+    {
+      "id": "application-s12",
+      "candidateId": "candidate-s12",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Monika Lewandowska",
+      "cv": "Monika Lewandowska — specjalistka ds. operacji\n2020–2026: firma logistyczna, obsługa reklamacji i rozliczeń z przewoźnikami.\nUmiejętności: Zapier, API przewoźników, webhooki, arkusze, instrukcje dla zespołu.",
+      "answer": "Zautomatyzowałam przyjmowanie reklamacji od przewoźników: formularz, webhook do Zapiera, sprawdzenie numeru przesyłki przez API i założenie zgłoszenia z kompletem danych. Gdy API nie odpowiada albo numer się nie zgadza, zgłoszenie trafia do osoby dyżurnej z opisem błędu. Średni czas przyjęcia reklamacji spadł z 15 do 4 minut. Sama zbudowałam i utrzymuję ten przepływ, a inżynier pomógł przy autoryzacji API.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 73,
+      "summary": "Doświadczenie w operacjach i automatyzacji. Warto dopytać o pracę z danymi finansowymi.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-05T14:00:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [
+          "Sama zbudowałam i utrzymuję ten przepływ",
+          "webhook do Zapiera",
+          "Gdy API nie odpowiada albo numer się nie zgadza, zgłoszenie trafia do osoby dyżurnej z opisem błędu."
+        ]
+      }
+    },
+    {
+      "id": "application-s13",
+      "candidateId": "candidate-s13",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Paweł Wójcik",
+      "cv": "Paweł Wójcik — Senior Backend Developer\n2017–2026: mikroserwisy, integracje płatności, architektura systemów.\nUmiejętności: Java, Kotlin, Kafka, AWS.",
+      "answer": "Od dziewięciu lat buduję integracje i systemy płatności. Mogę zaprojektować architekturę automatyzacji dla całej firmy i zastąpić narzędzia no-code własnym rozwiązaniem. Szukam pracy w pełni zdalnej i roli bliżej architektury niż codziennej pracy z zespołami operacyjnymi.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 66,
+      "summary": "Bardzo mocne kompetencje integracyjne. Warto porozmawiać o oczekiwaniach co do roli i trybu pracy.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-06T09:30:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [null, null, null]
+      }
+    },
+    {
+      "id": "application-s14",
+      "candidateId": "candidate-s14",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Zuzanna Kaczmarek",
+      "cv": "Zuzanna Kaczmarek — Team Leaderka obsługi klienta\n2019–2026: zespół 14 konsultantów, jakość obsługi, szkolenia.\nUmiejętności: ChatGPT, bazy wiedzy, coaching zespołu.",
+      "answer": "Wprowadziłam w zespole obsługi klienta pracę z ChatGPT przy pisaniu odpowiedzi. Przygotowałam bibliotekę promptów i przeszkoliłam 14 osób, jak sprawdzać odpowiedzi przed wysłaniem. Czas odpowiedzi na maila skrócił się o około jedną trzecią. Sama nie budowałam automatyzacji ani integracji, ale bardzo chcę się tego nauczyć.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 70,
+      "summary": "Doświadczenie we wdrażaniu AI w zespole i szkoleniach. Warto dopytać o umiejętności techniczne.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-06T11:05:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [null, null, null]
+      }
+    },
+    {
+      "id": "application-s15",
+      "candidateId": "candidate-s15",
+      "jobId": "20000000-0000-4000-8000-000000000004",
+      "companyId": "10000000-0000-4000-8000-000000000001",
+      "jobTitle": "AI Operations Specialist",
+      "candidateName": "Adam Nowicki",
+      "cv": "Adam Nowicki — freelancer\n2022–2026: automatyzacje dla biur rachunkowych i małych firm (Make, n8n, API systemów fakturowych).\n2019–2022: asystent w biurze rachunkowym.\nUmiejętności: Make, n8n, JSON, testowanie przepływów.",
+      "answer": "Dla biura rachunkowego zbudowałem w Make obieg akceptacji faktur: faktura z systemu trafia do właściwej osoby, a po akceptacji do księgowania. Faktury z błędnym NIP-em zatrzymują się z komunikatem dla księgowej. Biuro obsługuje teraz 900 faktur miesięcznie przy tym samym zespole. Wszystko zbudowałem sam i napisałem krótką instrukcję.",
+      "sourceNotes": "",
+      "generatedAnswer": "",
+      "score": 71,
+      "summary": "Praktyczne automatyzacje w księgowości. Warto dopytać o pracę w większym zespole.",
+      "stage": "submitted",
+      "events": [
+        {
+          "stage": "submitted",
+          "at": "2026-11-06T13:20:00.000Z",
+          "note": ""
+        }
+      ],
+      "evidence": {
+        "basis": "Opisuje automatyzację, którą sam zbudował i która działa u użytkowników. Zna n8n, Make albo podobne narzędzie. Umie opisać, jak obsłużył błędy i wyjątki.",
+        "quotes": [
+          "Dla biura rachunkowego zbudowałem w Make obieg akceptacji faktur",
+          "Make, n8n, API systemów fakturowych",
+          "Faktury z błędnym NIP-em zatrzymują się z komunikatem dla księgowej."
+        ]
+      }
+    }
+  ]
+}

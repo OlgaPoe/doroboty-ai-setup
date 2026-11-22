@@ -4,6 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
 import { nextStages, stageLabels, type Application } from "./model";
 import { usePrototype } from "./store";
+import { assessApplication } from "./score-evidence";
+import { ScoreEvidencePanel } from "./score-evidence-view";
 
 export function RecruitingApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -13,6 +15,14 @@ export function RecruitingApplication({ application }: { application: Applicatio
   const pendingFocus = useRef(false);
   const company = state.companies.find((item) => item.id === application.companyId);
   const availableStages = nextStages[application.stage];
+  const brief = state.jobs.find((job) => job.id === application.jobId)?.roleBrief;
+  const assessment = assessApplication(application, brief);
+  const answerQuotes =
+    assessment.kind === "role"
+      ? assessment.criteria.flatMap((item) =>
+          item.quote && item.from === "answer" ? [item.quote] : [],
+        )
+      : [];
 
   useLayoutEffect(() => {
     if (pendingFocus.current) {
@@ -24,11 +34,15 @@ export function RecruitingApplication({ application }: { application: Applicatio
   return (
     <>
       <ApplicationRecord
-        application={application}
+        application={{ ...application, score: assessment.score }}
         companyName={company?.name ?? ""}
         audience="employer"
         history={application.events}
         statusRef={statusRef}
+        answerHighlights={answerQuotes}
+        aside={
+          assessment.kind === "role" ? <ScoreEvidencePanel assessment={assessment} /> : undefined
+        }
         footer={
           availableStages.length > 0 ? (
             <>

@@ -337,3 +337,188 @@
   border-radius: 10px;
   background: var(--gui-canvas);
 }
+
+/* Score evidence column (employer only). DOM order: evidence, sheet, history. */
+.recruiting-layout.has-aside {
+  grid-template-columns: minmax(170px, 0.26fr) minmax(0, 1fr) minmax(260px, 0.42fr);
+  grid-template-areas: "margin sheet aside";
+  gap: 28px;
+}
+.recruiting-aside {
+  grid-area: aside;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.score-evidence {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--foreground);
+  border-radius: 24px;
+  background: #fff;
+}
+.score-evidence h2 {
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+}
+.score-evidence-group {
+  display: grid;
+  gap: 10px;
+}
+.score-evidence-group h3 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 18px;
+}
+.score-evidence-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 8px;
+  border-radius: 13px;
+  font-size: 14px;
+  background: var(--gui-match-green);
+}
+.score-evidence-group[data-level="partial"] .score-evidence-count {
+  background: var(--gui-match-yellow);
+}
+.score-evidence-group[data-level="none"] .score-evidence-count {
+  background: var(--gui-surface-muted);
+}
+.score-evidence-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.score-evidence-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.score-evidence-item[data-level="full"],
+.score-evidence-item[data-level="partial"] {
+  border: 1px solid var(--gui-edge);
+  background: #fff;
+}
+.score-evidence-item[data-level="none"] {
+  border: 1px dashed var(--gui-text-muted);
+  background: var(--gui-surface);
+  color: var(--gui-text-muted);
+}
+.score-evidence-criterion {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-weight: 600;
+}
+.score-evidence-item[data-level="none"] .score-evidence-criterion {
+  font-weight: 400;
+}
+.score-evidence-item blockquote {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 0 32px;
+  padding-left: 12px;
+  border-left: 3px solid var(--gui-accent);
+}
+.score-evidence-from,
+.score-evidence-missing,
+.score-evidence-gap {
+  font-size: 13px;
+  color: var(--gui-text-muted);
+}
+.score-evidence-missing,
+.score-evidence-gap {
+  margin-left: 32px;
+}
+.score-evidence-icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+}
+.score-evidence-icon[data-level="full"] {
+  background: var(--gui-match-green);
+  color: var(--gui-text);
+}
+.score-evidence-icon[data-level="partial"] {
+  background: var(--gui-match-yellow);
+  color: var(--gui-text);
+}
+.score-evidence-icon[data-level="none"] {
+  border: 1px solid var(--gui-text-muted);
+  color: var(--gui-text-muted);
+}
+.score-evidence-mark {
+  background: color-mix(in srgb, var(--gui-accent) 35%, #fff);
+  color: inherit;
+  border-radius: 4px;
+  padding-inline: 2px;
+}
+.criteria-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.criteria-partial {
+  color: var(--gui-text-muted);
+}
+.criteria-line-label {
+  font-weight: 600;
+}
+.criteria-line ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.criteria-line li + li::before {
+  content: "·";
+  margin-right: 8px;
+  color: var(--gui-text-muted);
+}
+.score-basis {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--gui-text-muted);
+}
+@media (max-width: 1600px) {
+  .recruiting-layout.has-aside {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.55fr);
+    grid-template-areas: "sheet aside" "margin margin";
+  }
+  .recruiting-layout.has-aside .recruiting-margin {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .recruiting-layout.has-aside .record-summary {
+    margin-top: 0;
+  }
+}
+@media (max-width: 950px) {
+  .recruiting-layout.has-aside {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "aside" "sheet" "margin";
+  }
+}
+@media (max-width: 600px) {
+  .recruiting-layout.has-aside .recruiting-margin {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
