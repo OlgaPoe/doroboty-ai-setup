@@ -34,7 +34,12 @@ export function RecruitingApplication({ application }: { application: Applicatio
   return (
     <>
       <ApplicationRecord
-        application={{ ...application, score: assessment.score }}
+        application={{
+          ...application,
+          score: assessment.score,
+          // The scenario summary contradicts the calibrated score; the evidence panel replaces it.
+          summary: assessment.kind === "role" ? "" : application.summary,
+        }}
         companyName={company?.name ?? ""}
         audience="employer"
         history={application.events}

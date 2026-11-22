@@ -462,7 +462,10 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
                   <MatchScore score={assessment?.score ?? a.score} />
                 </div>
                 {assessment && <CriteriaLine assessment={assessment} />}
-                {employer && <p className="mt-4 text-muted-foreground">{a.summary}</p>}
+                {/* The scenario summary contradicts the calibrated score, so it shows only with the generic one. */}
+                {assessment?.kind === "generic" && (
+                  <p className="mt-4 text-muted-foreground">{a.summary}</p>
+                )}
               </article>
             );
           })

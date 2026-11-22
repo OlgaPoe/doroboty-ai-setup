@@ -122,10 +122,12 @@ export function ApplicationRecord({
               }))}
             />
           </section>
-          <section className="record-summary" aria-labelledby="summary-heading">
-            <h2 id="summary-heading">Podsumowanie</h2>
-            <p>{application.summary}</p>
-          </section>
+          {application.summary ? (
+            <section className="record-summary" aria-labelledby="summary-heading">
+              <h2 id="summary-heading">Podsumowanie</h2>
+              <p>{application.summary}</p>
+            </section>
+          ) : null}
         </aside>
       </div>
     </article>

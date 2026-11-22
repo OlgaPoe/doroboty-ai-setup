@@ -1196,6 +1196,7 @@ test("candidate list shows the calibrated score with its criteria", async ({ pag
   await expect(card("Ewa Sadowska")).toContainText("Match Score: 100%");
   await expect(card("Piotr Lis")).toContainText("Match Score: 0%");
   await expect(card("Piotr Lis")).toContainText("Nie spełnia żadnego kryterium");
+  await expect(card("Piotr Lis")).not.toContainText("Bardzo dobre dopasowanie do opisu roli");
   const criteria = card("Rafał Bielecki").getByRole("list", { name: "Spełnione kryteria" });
   await expect(criteria.getByRole("listitem")).toHaveCount(2);
   await expect(criteria).toHaveText(/wynik w liczbach.*proces, w którym błąd kosztuje/);
@@ -1234,6 +1235,7 @@ test("application detail explains the score with quotes from the application", a
   await expect(page.locator(".record-stage")).toHaveText("W przeglądzie");
   await page.goto("/#/app/kandydaci/application-s04");
   await expect(page.locator(".record-meta")).toContainText("Match Score: 38%");
+  await expect(page.getByRole("region", { name: "Podsumowanie" })).toHaveCount(0);
   const partial = page
     .getByRole("region", { name: "Dlaczego taki wynik" })
     .getByRole("list", { name: /^Widać częściowo/ });
@@ -1256,6 +1258,7 @@ test("roles without question 5 keep the generic score", async ({ page }) => {
   await page.goto("/#/app/kandydaci/application-s01");
   await expect(page.locator(".record-meta")).toContainText("Match Score: 74%");
   await expect(page.getByRole("region", { name: "Dlaczego taki wynik" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Podsumowanie" })).toBeVisible();
   await expect(page.locator("mark")).toHaveCount(0);
   await page.goto("/#/app/kandydaci");
   await expect(
