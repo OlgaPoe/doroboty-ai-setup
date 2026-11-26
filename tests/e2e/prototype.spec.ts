@@ -7,6 +7,20 @@ async function choose(page: Page, name: string) {
   await page.goto("/#/auth/sign-in");
   await page.getByRole("button", { name: `Wejdź jako ${name}`, exact: true }).click();
 }
+async function openQuestion(page: Page, label: string) {
+  const toggle = page.locator(".role-question-toggle").filter({ hasText: label });
+  if ((await toggle.getAttribute("aria-expanded")) !== "true") await toggle.click();
+  return page.getByLabel(label);
+}
+async function importScenario(page: Page, state: ReturnType<typeof initialState>) {
+  await page.goto("/#/app/settings");
+  await page.getByLabel("Importuj plik scenariusza").setInputFiles({
+    name: "scenario.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(state)),
+  });
+  await page.getByRole("button", { name: "Importuj", exact: true }).click();
+}
 async function application(page: Page) {
   await choose(page, "Anna Kowalska");
   await page.goto("/#/aplikuj/ai-product-manager");
@@ -99,9 +113,9 @@ test("published job → saved offer/draft → submitted application → employer
   await choose(page, "Karolina Wiśniewska");
   await page.getByRole("link", { name: "Dodaj ofertę", exact: true }).click();
   await page.getByLabel("Nazwa stanowiska").fill("Product Designer do automatyzacji");
-  await page
-    .getByLabel("Brief — kogo szukasz i do jakiego zadania?")
-    .fill("Szukamy osoby do badań z klientami, prototypowania i wdrażania automatyzacji obsługi.");
+  await (
+    await openQuestion(page, "Nad czym ta osoba będzie pracować na początku?")
+  ).fill("Szukamy osoby do badań z klientami, prototypowania i wdrażania automatyzacji obsługi.");
   await page.getByRole("button", { name: "Przygotuj opis z AI" }).click();
   await page.getByRole("button", { name: "Użyj propozycji" }).click();
   await page.getByRole("checkbox").check();
@@ -301,6 +315,26 @@ test("core screens have no serious accessibility violations", async ({ page }) =
   await page.goto("/#/app/profil");
   results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   expect(results.violations).toEqual([]);
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  imported.jobs.find((x) => x.slug === "ai-operations-specialist")!.roleBrief!.managerRequest = {
+    token: "token-axe",
+    sentAt: "2026-11-10T09:00:00.000Z",
+    requestedBy: "Karolina Wiśniewska",
+  };
+  await importScenario(page, imported);
+  for (const path of [
+    "/#/app/oferty/nowa",
+    "/#/app/oferty/20000000-0000-4000-8000-000000000004",
+    "/#/app/kandydaci/application-s01",
+    "/#/pytania/token-axe",
+  ]) {
+    await page.goto(path);
+    await expect(page.locator("h1").first()).toBeVisible();
+    results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    expect(results.violations, path).toEqual([]);
+  }
 });
 
 test("public home and filters reflow at 320px with no external requests", async ({ page }) => {
@@ -691,7 +725,7 @@ test("process sheet keeps notes across keyboard tabs and saves stage history wit
   await page.goto("/#/app/kandydaci/application-example");
   const note = page.getByLabel("Notatka rekrutacyjna (widoczna pracodawcy)");
   await expect(
-    page.locator(".record-meta").getByText("Match Score: 72%", { exact: true }),
+    page.locator(".record-meta").getByText("Match Score: 13%", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText("Wynik przykładowy", { exact: true })).toHaveCount(0);
   await expect(page.locator("iframe[title='Podgląd CV (PDF)']")).toHaveCount(0);
@@ -994,4 +1028,466 @@ test("candidate snapshot supports custom CV and long content at desktop and mobi
   await expect(page.getByRole("tabpanel", { name: "Odpowiedź", exact: true })).toContainText(
     record.answer,
   );
+});
+
+test("recruiter saves a draft, sends all questions and sees the pending status", async ({
+  page,
+}) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Dodaj ofertę", exact: true }).click();
+  await page.getByLabel("Nazwa stanowiska").fill("Inżynier/ka agentów AI");
+  await (
+    await openQuestion(page, "Za co będzie odpowiadać sama, a w czym będzie pomagać innym?")
+  ).fill("Sama buduje agentów do obsługi zgłoszeń.");
+  await (
+    await openQuestion(page, "Z kim będzie pracować na co dzień?")
+  ).fill("Dwóch inżynierów i product manager.");
+  await page.getByRole("button", { name: "Zapisz szkic", exact: true }).click();
+  await expect(page.getByText("Szkic został zapisany.", { exact: true })).toBeVisible();
+  await page.goto("/#/app/oferty");
+  const card = page.locator("article").filter({ hasText: "Inżynier/ka agentów AI" });
+  await expect(card).toContainText("Szkic");
+  await page.goto("/#/oferty");
+  await expect(page.getByRole("link", { name: "Inżynier/ka agentów AI" })).toHaveCount(0);
+  await page.goto("/#/app/oferty");
+  await card.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  await expect(
+    await openQuestion(page, "Za co będzie odpowiadać sama, a w czym będzie pomagać innym?"),
+  ).toHaveValue("Sama buduje agentów do obsługi zgłoszeń.");
+  await page.getByRole("button", { name: "Wyślij pytania managerowi", exact: true }).click();
+  await expect(page.getByText("Czeka na managera", { exact: false }).first()).toBeVisible();
+  await page.goto("/#/app/oferty");
+  await expect(card).toContainText("Czeka na managera");
+  await card.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  await page.getByRole("link", { name: "Otwórz stronę managera", exact: true }).click();
+  await expect(page).toHaveURL(/#\/pytania\/[a-zA-Z0-9-]+$/);
+});
+
+test("legacy brief stays visible and preserved", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  const job = imported.jobs.find((x) => x.slug === "ai-operations-specialist")!;
+  delete job.roleBrief;
+  job.sourceBrief = "Stary brief: szukamy osoby do automatyzacji faktur.";
+  await importScenario(page, imported);
+  await page.goto(`/#/app/oferty/${job.id}`);
+  await expect(
+    page.getByText("Stary brief: szukamy osoby do automatyzacji faktur.", { exact: false }),
+  ).toBeVisible();
+  await expect(
+    await openQuestion(page, "Nad czym ta osoba będzie pracować na początku?"),
+  ).toHaveValue("");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Opublikuj ofertę", exact: true }).click();
+  await expect(page).toHaveURL(/#\/app\/oferty$/);
+  const saved = await page.evaluate(
+    ([key, id]) =>
+      JSON.parse(localStorage.getItem(key)!).jobs.find((x: { id: string }) => x.id === id),
+    [STORAGE_KEY, job.id],
+  );
+  expect(saved.sourceBrief).toContain("Stary brief");
+});
+
+async function draftSentToManager(page: Page) {
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Dodaj ofertę", exact: true }).click();
+  await page.getByLabel("Nazwa stanowiska").fill("Inżynier/ka agentów AI");
+  await (
+    await openQuestion(page, "Za co będzie odpowiadać sama, a w czym będzie pomagać innym?")
+  ).fill("Sama buduje agentów do obsługi zgłoszeń.");
+  await (
+    await openQuestion(page, "Z kim będzie pracować na co dzień?")
+  ).fill("Dwóch inżynierów i product manager.");
+  await page.getByRole("button", { name: "Wyślij pytania managerowi", exact: true }).click();
+  await page.getByRole("link", { name: "Otwórz stronę managera", exact: true }).click();
+  await expect(page.getByText("Pytanie 1 z 5", { exact: true })).toBeVisible();
+}
+
+test("manager confirms, changes, answers and skips, then the recruiter sees sources", async ({
+  page,
+}) => {
+  await draftSentToManager(page);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Inżynier/ka agentów AI: 5 pytań o rolę" }),
+  ).toBeVisible();
+  await expect(page.getByText("Pytanie 1 z 5", { exact: true })).toBeVisible();
+  const next = page.getByRole("button", { name: "Dalej", exact: true });
+  await expect(next).toBeDisabled();
+  await page
+    .getByLabel("Nad czym ta osoba będzie pracować na początku?")
+    .fill("Pilot agenta, który klasyfikuje zgłoszenia klientów.");
+  await next.click();
+  await expect(page.getByText("Wpisane przez: Karolina Wiśniewska", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await next.click();
+  await page.getByRole("button", { name: "Pomiń pytanie", exact: true }).click();
+  await page.getByLabel("Rola jeszcze nieustalona").check();
+  await next.click();
+  await page.getByRole("button", { name: "Zmień", exact: true }).click();
+  await page
+    .getByLabel("Z kim będzie pracować na co dzień?")
+    .fill("Dwóch inżynierów, product manager i analityczka.");
+  await next.click();
+  await page
+    .getByLabel("Po czym poznasz w zgłoszeniu dobrego kandydata?")
+    .fill("Opisuje agenta, którego sam wdrożył. Pokazuje, jak mierzył jakość odpowiedzi.");
+  await page.getByRole("button", { name: "Wyślij odpowiedzi", exact: true }).click();
+  await expect(
+    page.getByText("Dziękujemy. Odpowiedzi zostały przekazane.", { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Dziękujemy" })).toBeFocused();
+  await page.getByRole("link", { name: "Przejdź do panelu rekrutacji", exact: true }).click();
+  await page.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  const question = (label: string) => page.locator("li").filter({ hasText: label });
+  await expect(question("Nad czym ta osoba")).toContainText("Od managera");
+  await expect(question("Za co będzie odpowiadać")).toContainText("Potwierdzona przez managera");
+  await expect(question("Jakie decyzje")).toContainText(
+    "Manager pominął: Rola jeszcze nieustalona",
+  );
+  await expect(question("Z kim będzie pracować")).toContainText("Od managera");
+  await expect(await openQuestion(page, "Z kim będzie pracować na co dzień?")).toHaveValue(
+    "Dwóch inżynierów, product manager i analityczka.",
+  );
+  await expect(page.getByText("Manager odpowiedział", { exact: false }).first()).toBeVisible();
+});
+
+test("manager page rejects unknown and answered tokens", async ({ page }) => {
+  await page.goto("/#/pytania/nieznany-token");
+  await expect(page.getByRole("heading", { name: "Nie znaleziono strony" })).toBeVisible();
+  await page.goto("/#/pytania/brightlabs-ai-pm-2026-11");
+  await expect(page.getByText("Odpowiedzi zostały już wysłane.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Dalej", exact: true })).toHaveCount(0);
+});
+
+test("manager page fits 375px and is keyboard operable", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  const job = imported.jobs.find((x) => x.slug === "ai-operations-specialist")!;
+  job.roleBrief!.managerRequest = {
+    token: "token-b",
+    sentAt: "2026-11-10T09:00:00.000Z",
+    requestedBy: "Karolina Wiśniewska",
+  };
+  await importScenario(page, imported);
+  await page.goto("/#/pytania/token-b");
+  await expect(page.getByText("Pytanie 1 z 5", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  const agree = page.getByRole("button", { name: "Zgadza się", exact: true });
+  let reached = false;
+  for (let i = 0; i < 40 && !reached; i++) {
+    await page.keyboard.press("Tab");
+    reached = await agree.evaluate((el) => el === document.activeElement);
+  }
+  expect(reached).toBe(true);
+  await page.keyboard.press("Space");
+  await expect(agree).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Dalej", exact: true })).toBeEnabled();
+});
+
+test("candidate list shows the calibrated score with its criteria", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Kandydaci", exact: true }).click();
+  const card = (name: string) =>
+    page.locator("article").filter({ has: page.getByRole("link", { name, exact: true }) });
+  await expect(card("Ewa Sadowska")).toContainText("Match Score: 100%");
+  await expect(card("Piotr Lis")).toContainText("Match Score: 0%");
+  await expect(card("Piotr Lis")).toContainText("Nie spełnia żadnego kryterium");
+  await expect(card("Piotr Lis")).not.toContainText("Bardzo dobre dopasowanie do opisu roli");
+  const criteria = card("Rafał Bielecki").getByRole("list", { name: "Spełnione kryteria" });
+  await expect(criteria.getByRole("listitem")).toHaveCount(2);
+  await expect(criteria).toHaveText(/wynik w liczbach.*proces, w którym błąd kosztuje/);
+  await expect(criteria).not.toContainText("własne vs zespołu");
+  await expect(card("Julia Kamińska").getByRole("list", { name: "Spełnione kryteria" })).toHaveText(
+    /zbudował automatyzację.*n8n \/ Make.*obsługa błędów/,
+  );
+  await expect(card("Julia Kamińska")).toContainText("Match Score: 100%");
+  await expect(card("Kamil Dąbrowski")).toContainText("Match Score: 50%");
+  await expect(card("Natalia Pawlak")).toContainText("Match Score: 88%");
+  await expect(criteria).toContainText("wynik w liczbach (częściowo)");
+});
+
+test("application detail explains the score with quotes from the application", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/kandydaci/application-s03");
+  await expect(page.locator(".record-meta")).toContainText("Match Score: 75%");
+  const panel = page.getByRole("region", { name: "Dlaczego taki wynik" });
+  await expect(
+    panel.getByRole("list", { name: /^Widać w aplikacji/ }).getByRole("listitem"),
+  ).toHaveCount(3);
+  await expect(panel.getByRole("list", { name: /^Nie widać/ }).getByRole("listitem")).toHaveCount(
+    1,
+  );
+  await expect(panel.getByRole("list", { name: /^Nie widać/ })).toContainText(
+    "Wynik porównany z punktem wyjścia, w liczbach.",
+  );
+  await expect(panel).toContainText("Od managera".toLowerCase());
+  await expect(panel).toContainText("Sama ustalałam zakres i kolejność prac");
+  await expect(panel).toContainText("Nie znaleziono w odpowiedzi ani w CV.");
+  await expect(page.locator("mark.score-evidence-mark")).toHaveCount(3);
+  await expect(page.locator("mark.score-evidence-mark").first()).toContainText(
+    "zrezygnowałam z planowanego czatbota",
+  );
+  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
+  await expect(page.locator(".record-stage")).toHaveText("W przeglądzie");
+  await page.goto("/#/app/kandydaci/application-s04");
+  await expect(page.locator(".record-meta")).toContainText("Match Score: 38%");
+  await expect(page.getByRole("region", { name: "Podsumowanie" })).toHaveCount(0);
+  const partial = page
+    .getByRole("region", { name: "Dlaczego taki wynik" })
+    .getByRole("list", { name: /^Widać częściowo/ });
+  await expect(partial.getByRole("listitem")).toHaveCount(1);
+  await expect(partial).toContainText("zmniejszył liczbę błędów o 40%");
+  await expect(partial).toContainText("Brakuje: punktu wyjścia, od którego liczono zmianę");
+});
+
+test("roles without question 5 keep the generic score", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  imported.jobs[0].roleBrief!.answers[4] = {
+    questionId: "q5",
+    text: "",
+    source: "none",
+    skipReason: "dont_know",
+  };
+  await importScenario(page, imported);
+  await page.goto("/#/app/kandydaci/application-s01");
+  await expect(page.locator(".record-meta")).toContainText("Match Score: 74%");
+  await expect(page.getByRole("region", { name: "Dlaczego taki wynik" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Podsumowanie" })).toBeVisible();
+  await expect(page.locator("mark")).toHaveCount(0);
+  await page.goto("/#/app/kandydaci");
+  await expect(
+    page
+      .locator("article")
+      .filter({ has: page.getByRole("link", { name: "Ewa Sadowska", exact: true }) }),
+  ).toContainText("Ogólne dopasowanie do ogłoszenia");
+});
+
+test("candidate never sees the score evidence", async ({ page }) => {
+  await application(page);
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Kandydaci", exact: true }).click();
+  await page.getByRole("link", { name: "Anna Kowalska", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Dlaczego taki wynik" })).toBeVisible();
+  await choose(page, "Anna Kowalska");
+  await page.goto("/#/app/aplikacje");
+  await expect(page.getByRole("list", { name: "Spełnione kryteria" })).toHaveCount(0);
+  await page.getByRole("link", { name: "AI Product Manager", exact: true }).click();
+  await expect(page.getByText("Dlaczego taki wynik")).toHaveCount(0);
+  await expect(page.getByText("Jeden projekt, w którym kandydat")).toHaveCount(0);
+  await expect(page.locator("mark")).toHaveCount(0);
+});
+
+test("jobs without answers keep the old stage buttons", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  delete imported.jobs[0].roleBrief;
+  await importScenario(page, imported);
+  await page.goto("/#/app/kandydaci/application-example");
+  await expect(page.getByRole("button", { name: "W przeglądzie", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Dlaczego taki wynik" })).toHaveCount(0);
+  await expect(page.locator(".record-meta")).toContainText("Match Score: 72%");
+});
+
+test("score evidence comes before the stage buttons on a phone", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/kandydaci/application-s02");
+  const panelBox = await page.getByRole("region", { name: "Dlaczego taki wynik" }).boundingBox();
+  const stageBox = await page
+    .getByRole("button", { name: "W przeglądzie", exact: true })
+    .boundingBox();
+  expect(panelBox!.y).toBeLessThan(stageBox!.y);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await page.goto("/#/app/kandydaci");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+
+test("P-5: recruiter answers, manager completes, candidate applies, recruiter screens", async ({
+  page,
+}) => {
+  const external: string[] = [];
+  const errors: string[] = [];
+  page.on("request", (r) => {
+    if (
+      !r.url().startsWith("http://127.0.0.1:3106") &&
+      !r.url().startsWith("data:") &&
+      !r.url().startsWith("blob:")
+    )
+      external.push(r.url());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await draftSentToManager(page);
+  const next = page.getByRole("button", { name: "Dalej", exact: true });
+  const firstProject =
+    "Pilot agenta, który klasyfikuje zgłoszenia klientów i kieruje je do finansów.";
+  await page.getByLabel("Nad czym ta osoba będzie pracować na początku?").fill(firstProject);
+  await next.click();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await page.screenshot({ path: "artifacts/p5-02-manager-1440.png", fullPage: true });
+  await next.click();
+  await page.getByRole("button", { name: "Pomiń pytanie", exact: true }).click();
+  await page.getByLabel("Rola jeszcze nieustalona").check();
+  await next.click();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await next.click();
+  await page
+    .getByLabel("Po czym poznasz w zgłoszeniu dobrego kandydata?")
+    .fill("Opisuje agenta, którego sam wdrożył. Pokazuje, jak mierzył jakość odpowiedzi.");
+  await page.getByRole("button", { name: "Wyślij odpowiedzi", exact: true }).click();
+  await page.getByRole("link", { name: "Przejdź do panelu rekrutacji", exact: true }).click();
+  await page.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  await page.getByRole("button", { name: "Przygotuj opis z AI", exact: true }).click();
+  await page.getByRole("button", { name: "Użyj propozycji", exact: true }).click();
+  await page.screenshot({ path: "artifacts/p5-01-editor-1440.png", fullPage: true });
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Opublikuj ofertę", exact: true }).click();
+  await expect(page).toHaveURL(/#\/app\/oferty$/);
+
+  await choose(page, "Anna Kowalska");
+  await page.goto("/#/oferty");
+  await page.getByLabel("Szukaj ofert", { exact: true }).fill("Inżynier/ka agentów AI");
+  await page.getByRole("button", { name: "Szukaj", exact: true }).click();
+  await page.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Pierwszy projekt" })).toBeVisible();
+  await expect(page.getByText(firstProject, { exact: false }).first()).toBeVisible();
+  await expect(page.getByText("Opisuje agenta, którego sam wdrożył.")).toHaveCount(0);
+  await page.screenshot({ path: "artifacts/p5-03-offer-1440.png", fullPage: true });
+  await page.getByRole("link", { name: "Aplikuj", exact: true }).click();
+  await page
+    .getByLabel("Dlaczego pasujesz do tej roli?")
+    .fill("Wdrożyłam agenta do klasyfikacji zgłoszeń i mierzyłam trafność odpowiedzi co tydzień.");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Wyślij aplikację", exact: true }).click();
+  await expect(page.getByText("Aplikacja została wysłana.", { exact: false })).toBeVisible();
+
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Kandydaci", exact: true }).click();
+  await page.getByRole("link", { name: "Anna Kowalska", exact: true }).click();
+  const panel = page.getByRole("region", { name: "Dlaczego taki wynik" });
+  await expect(panel).toContainText("Opisuje agenta, którego sam wdrożył.");
+  await expect(panel).toContainText("od managera");
+  await expect(panel).toContainText(
+    "Wdrożyłam agenta do klasyfikacji zgłoszeń i mierzyłam trafność odpowiedzi co tydzień.",
+  );
+  await expect(page.locator(".record-meta")).toContainText("Match Score: 100%");
+  await page.screenshot({ path: "artifacts/p5-04-screening-1440.png", fullPage: true });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.screenshot({ path: "artifacts/p5-05-screening-375.png", fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("button", { name: "W przeglądzie", exact: true }).click();
+  await page.getByRole("button", { name: "Zaproszenie na rozmowę", exact: true }).click();
+  await expect(page.locator(".record-stage")).toHaveText("Zaproszenie na rozmowę");
+
+  await choose(page, "Anna Kowalska");
+  await page.goto("/#/app/aplikacje");
+  await page.getByRole("link", { name: "Inżynier/ka agentów AI", exact: true }).click();
+  await expect(page.locator(".record-stage")).toHaveText("Zaproszenie na rozmowę");
+  await expect(page.getByText("Dlaczego taki wynik")).toHaveCount(0);
+  expect(external).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test("manager can skip a prefilled question and the recruiter sees why", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  const job = imported.jobs.find((x) => x.slug === "ai-operations-specialist")!;
+  job.roleBrief!.managerRequest = {
+    token: "token-skip",
+    sentAt: "2026-11-10T09:00:00.000Z",
+    requestedBy: "Karolina Wiśniewska",
+  };
+  await importScenario(page, imported);
+  await page.goto("/#/pytania/token-skip");
+  const next = page.getByRole("button", { name: "Dalej", exact: true });
+  await page.getByRole("button", { name: "Pomiń pytanie", exact: true }).click();
+  await page.getByLabel("Nie mogę ujawnić").check();
+  await next.click();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await next.click();
+  await page.getByRole("button", { name: "Pomiń pytanie", exact: true }).click();
+  await next.click();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await next.click();
+  await page.getByRole("button", { name: "Zgadza się", exact: true }).click();
+  await page.getByRole("button", { name: "Wyślij odpowiedzi", exact: true }).click();
+  await page.goto(`/#/app/oferty/${job.id}`);
+  const q1 = page.locator("li").filter({ hasText: "Nad czym ta osoba" });
+  await expect(q1).toContainText("Twoja odpowiedź");
+  await expect(q1).toContainText("Manager pominął: Nie mogę ujawnić");
+  await expect(
+    await openQuestion(page, "Nad czym ta osoba będzie pracować na początku?"),
+  ).not.toHaveValue("");
+});
+
+test("legacy brief stays visible after the recruiter answers a question", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  const imported = initialState();
+  imported.activePersonId = "employer-brightlabs";
+  const job = imported.jobs.find((x) => x.slug === "ai-operations-specialist")!;
+  delete job.roleBrief;
+  job.sourceBrief = "Stary brief: szukamy osoby do automatyzacji faktur.";
+  await importScenario(page, imported);
+  await page.goto(`/#/app/oferty/${job.id}`);
+  await (
+    await openQuestion(page, "Nad czym ta osoba będzie pracować na początku?")
+  ).fill("Automatyzacja przekazywania faktur.");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: "Opublikuj ofertę", exact: true }).click();
+  await expect(page).toHaveURL(/#\/app\/oferty$/);
+  await page.goto(`/#/app/oferty/${job.id}`);
+  await expect(page.getByText("Wcześniejszy brief", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Stary brief: szukamy osoby do automatyzacji faktur.", { exact: false }),
+  ).toBeVisible();
+});
+
+test("prepared roles do not ask to update an up-to-date description", async ({ page }) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.goto("/#/app/oferty");
+  await expect(page.getByRole("link", { name: "AI Product Manager", exact: true })).toBeVisible();
+  await expect(page.getByText("możesz zaktualizować opis", { exact: false })).toHaveCount(0);
+});
+
+test("question list shows status, one example per question and a steady manager panel", async ({
+  page,
+}) => {
+  await choose(page, "Karolina Wiśniewska");
+  await page.getByRole("link", { name: "Dodaj ofertę", exact: true }).click();
+  const panel = page.locator(".role-request");
+  await expect(panel).toContainText("Nie wszystko wiesz o tej roli?");
+  await expect(page.getByText("0 z 5 uzupełnione", { exact: true })).toBeVisible();
+  const toggles = page.locator(".role-question-toggle");
+  await expect(toggles).toHaveCount(5);
+  await expect(toggles.nth(0)).toHaveAttribute("aria-expanded", "true");
+  await expect(toggles.nth(1)).toHaveAttribute("aria-expanded", "false");
+  await (
+    await openQuestion(page, "Nad czym ta osoba będzie pracować na początku?")
+  ).fill("Pilot agenta do zgłoszeń.");
+  await expect(page.getByText("1 z 5 uzupełnione", { exact: true })).toBeVisible();
+  await expect(panel).toContainText("Nie wszystko wiesz o tej roli?");
+  for (let i = 0; i < 5; i++) {
+    if ((await toggles.nth(i).getAttribute("aria-expanded")) !== "true")
+      await toggles.nth(i).click();
+    await expect(toggles.nth(i)).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator(".role-question-hint")).toHaveCount(1);
+    await expect(page.locator(".role-question-hint")).toContainText(/np\./i);
+  }
+  await expect(toggles.nth(0)).toContainText("Pilot agenta do zgłoszeń.");
+  await expect(toggles.nth(0)).toContainText("Twoja odpowiedź");
+  await expect(toggles.nth(1)).toContainText("Brak odpowiedzi");
+  await expect(toggles.nth(4)).toContainText("liczy się do Match Score");
+  await expect(toggles.nth(0)).toContainText("w ogłoszeniu");
 });

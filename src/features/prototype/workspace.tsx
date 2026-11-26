@@ -14,6 +14,8 @@ import { currentPerson, publishedJobs, stageLabels, MIN_APPLICATION_ANSWER_LENGT
 import { PageTitle, Empty, NotFound, Notice } from "./shell";
 import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
+import { assessApplication } from "./score-evidence";
+import { CriteriaLine } from "./score-evidence-view";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
 
@@ -31,10 +33,11 @@ export function PersonPicker() {
   const [params] = useSearchParams();
   const next = params.get("next");
   const audience = params.get("audience");
+  const selectable = state.people.filter((person) => !person.hidden);
   const people =
     audience === "candidate" || audience === "employer"
-      ? state.people.filter((person) => person.role === audience)
-      : state.people;
+      ? selectable.filter((person) => person.role === audience)
+      : selectable;
   const safeNext = next && /^\/(?!\/)/.test(next) && !next.startsWith("/auth") ? next : null;
   return (
     <section className="prototype-section max-w-4xl">
@@ -50,7 +53,7 @@ export function PersonPicker() {
             <Button
               variant="outline"
               onClick={() => {
-                run({ type: "select_person", id: person.id });
+                if (!run({ type: "select_person", id: person.id })) return;
                 navigate(
                   person.role === "candidate"
                     ? (safeNext ?? "/app")
@@ -435,28 +438,37 @@ export function ApplicationsPage({ employer = false }: { employer?: boolean }) {
       </Field>
       <div className="mt-6 space-y-4">
         {applications.length ? (
-          applications.map((a) => (
-            <article className="prototype-panel" key={a.id}>
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <Link
-                    className="text-xl font-semibold text-[var(--gui-link)]"
-                    to={`${employer ? "/app/kandydaci" : "/app/aplikacje"}/${a.id}`}
-                  >
-                    {employer ? a.candidateName : a.jobTitle}
-                  </Link>
-                  <p className="my-3 text-muted-foreground">
-                    {employer
-                      ? a.jobTitle
-                      : state.companies.find((x) => x.id === a.companyId)?.name}
-                  </p>
-                  <p>{stageLabels[a.stage]}</p>
+          applications.map((a) => {
+            const assessment = employer
+              ? assessApplication(a, state.jobs.find((job) => job.id === a.jobId)?.roleBrief)
+              : undefined;
+            return (
+              <article className="prototype-panel" key={a.id}>
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <Link
+                      className="text-xl font-semibold text-[var(--gui-link)]"
+                      to={`${employer ? "/app/kandydaci" : "/app/aplikacje"}/${a.id}`}
+                    >
+                      {employer ? a.candidateName : a.jobTitle}
+                    </Link>
+                    <p className="my-3 text-muted-foreground">
+                      {employer
+                        ? a.jobTitle
+                        : state.companies.find((x) => x.id === a.companyId)?.name}
+                    </p>
+                    <p>{stageLabels[a.stage]}</p>
+                  </div>
+                  <MatchScore score={assessment?.score ?? a.score} />
                 </div>
-                <MatchScore score={a.score} />
-              </div>
-              {employer && <p className="mt-4 text-muted-foreground">{a.summary}</p>}
-            </article>
-          ))
+                {assessment && <CriteriaLine assessment={assessment} />}
+                {/* The scenario summary contradicts the calibrated score, so it shows only with the generic one. */}
+                {assessment?.kind === "generic" && (
+                  <p className="mt-4 text-muted-foreground">{a.summary}</p>
+                )}
+              </article>
+            );
+          })
         ) : (
           <Empty>Brak aplikacji spełniających kryteria.</Empty>
         )}

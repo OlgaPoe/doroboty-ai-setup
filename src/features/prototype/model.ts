@@ -1,7 +1,17 @@
 import { z } from "zod";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
+import screeningScenario from "./data/screening-scenario.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
+import {
+  QUESTION_IDS,
+  answerOf,
+  roleBriefSchema,
+  type QuestionId,
+  type RecruiterAnswers,
+  type SkipReason,
+} from "./role-brief";
+import { evidenceSchema } from "./score-evidence";
 
 const id = z
   .string()
@@ -31,8 +41,8 @@ export const jobSchema = z
     slug: id,
     companyId: id,
     title: shortText,
-    summary: text.min(10),
-    description: text.min(30),
+    summary: text,
+    description: text,
     category: z.enum(["build", "apply", "lead"]),
     function: z.enum(["product", "engineering", "data", "design", "marketing", "operations"]),
     remoteStatus: z.enum(["onsite", "hybrid", "remote"]),
@@ -53,7 +63,18 @@ export const jobSchema = z
     verificationStatus: z.enum(["unverified", "editorial", "employer_verified"]),
     sourceBrief: text.optional(),
     generatedDescription: text.optional(),
+    roleBrief: roleBriefSchema.optional(),
   })
+  .refine((job) => job.publicationStatus !== "draft" || job.title.length >= 3, {
+    path: ["title"],
+    message: "Title must have at least 3 characters",
+  })
+  .refine(
+    (job) =>
+      job.publicationStatus === "draft" ||
+      (job.summary.length >= 10 && job.description.length >= 30),
+    { path: ["description"], message: "Published jobs need a summary and a description" },
+  )
   .refine(
     (job) =>
       job.salaryMin === undefined || job.salaryMax === undefined || job.salaryMin <= job.salaryMax,
@@ -72,6 +93,7 @@ const personSchema = profileSchema.extend({
   cv: text,
   exampleScore: z.number().int().min(0).max(100),
   exampleSummary: text,
+  hidden: z.boolean().optional(),
 });
 export const stages = [
   "submitted",
@@ -122,6 +144,8 @@ const applicationSchema = z.object({
     .array(z.object({ stage: z.enum(stages), at: z.iso.datetime(), note: text }))
     .min(1)
     .max(30),
+  /** Curated "AI" evidence for prepared applications (calibrated Match Score). */
+  evidence: evidenceSchema.optional(),
 });
 const draftSchema = z.object({
   candidateId: id,
@@ -213,14 +237,29 @@ export type Action =
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
   | { type: "withdraw"; applicationId: string }
   | { type: "publish"; job: z.infer<typeof jobSchema> }
-  | { type: "company"; name: string; description: string };
+  | { type: "company"; name: string; description: string }
+  | { type: "request_manager"; jobId: string; token: string; answers: RecruiterAnswers }
+  | {
+      type: "manager_answer";
+      token: string;
+      answers: {
+        questionId: QuestionId;
+        outcome: "confirmed" | "answered" | "skipped";
+        text?: string;
+        skipReason?: SkipReason;
+      }[];
+    };
 
 export function initialState(): State {
   const state = stateSchema.parse({
     version: 1,
     activePersonId: null,
     ...marketplace,
-    people,
+    jobs: marketplace.jobs.map((job) => ({
+      ...job,
+      roleBrief: (screeningScenario.roleBriefs as Record<string, unknown>)[job.id],
+    })),
+    people: [...people, ...screeningScenario.people],
     applications: [],
     saved: [],
     drafts: [],
@@ -243,7 +282,21 @@ export function initialState(): State {
     summary: bob.exampleSummary,
     stage: "submitted",
     events: [{ stage: "submitted", at: "2026-11-02T09:00:00.000Z", note: "" }],
+    evidence: {
+      basis: answerOf(job.roleBrief, "q5")?.text ?? "",
+      quotes: [
+        null,
+        {
+          quote: "wdrożenie, które skróciło czas odpowiedzi o 25%",
+          missing: "punktu wyjścia, od którego liczono zmianę",
+        },
+        null,
+        null,
+      ],
+    },
   });
+  // Prepared screening applications (P-5) follow Marek's example application.
+  state.applications.push(...stateSchema.shape.applications.parse(screeningScenario.applications));
   return stateSchema.parse(state);
 }
 export function publishedJobs(state: State): JobWithCompany[] {
@@ -339,11 +392,74 @@ export function transition(
     const p = employer();
     const job = jobSchema.parse(action.job);
     if (job.companyId !== p.companyId) fail("Wybierz ofertę własnej firmy.");
+    if (job.publicationStatus === "published" && job.roleBrief?.managerRequest?.answeredAt)
+      job.roleBrief.appliedAt = now;
     const index = s.jobs.findIndex((x) => x.id === job.id);
     if (index >= 0) {
       if (s.jobs[index].companyId !== p.companyId) fail("Nie można zmienić tej oferty.");
       s.jobs[index] = job;
     } else s.jobs.unshift(job);
+  } else if (action.type === "request_manager") {
+    const p = employer();
+    const job = s.jobs.find((x) => x.id === action.jobId && x.companyId === p.companyId);
+    if (!job) return fail("Nie znaleziono oferty.");
+    const previous = job.roleBrief;
+    job.roleBrief = roleBriefSchema.parse({
+      answers: QUESTION_IDS.map((questionId) => {
+        const value = (action.answers[questionId] ?? "").trim();
+        const before = previous?.answers.find((a) => a.questionId === questionId);
+        if (!value) return { questionId, text: "", source: "none" };
+        if (before && before.text === value) return { ...before, skipReason: undefined };
+        return { questionId, text: value, source: "recruiter" };
+      }),
+      managerRequest: { token: action.token, sentAt: now, requestedBy: p.name },
+      legacyBrief:
+        previous?.legacyBrief ?? (!previous && job.sourceBrief ? job.sourceBrief : undefined),
+      appliedAt: previous?.appliedAt,
+      criterionLabels: previous?.criterionLabels,
+    });
+  } else if (action.type === "manager_answer") {
+    const job = s.jobs.find((x) => x.roleBrief?.managerRequest?.token === action.token);
+    const brief = job?.roleBrief;
+    if (!brief?.managerRequest) return fail("Nie znaleziono prośby o odpowiedzi.");
+    if (brief.managerRequest.answeredAt) fail("Odpowiedzi zostały już wysłane.");
+    if (
+      action.answers.length !== QUESTION_IDS.length ||
+      new Set(action.answers.map((a) => a.questionId)).size !== QUESTION_IDS.length
+    )
+      fail("Odpowiedz na każde pytanie albo je pomiń.");
+    brief.answers = brief.answers.map((answer) => {
+      const input = action.answers.find((a) => a.questionId === answer.questionId)!;
+      const confirmedSource = answer.source === "manager" ? "manager" : "recruiter_confirmed";
+      if (input.outcome === "confirmed") {
+        if (!answer.text) return fail("Nie ma odpowiedzi do potwierdzenia.");
+        return { questionId: answer.questionId, text: answer.text, source: confirmedSource };
+      }
+      if (input.outcome === "answered") {
+        const value = (input.text ?? "").trim();
+        if (!value) return fail("Wpisz odpowiedź albo pomiń pytanie.");
+        // "Zmień" without an actual change still confirms the existing text.
+        if (answer.text && value === answer.text)
+          return { questionId: answer.questionId, text: value, source: confirmedSource };
+        return { questionId: answer.questionId, text: value, source: "manager" };
+      }
+      // Skipping keeps any prefilled text, unconfirmed, together with the reason.
+      if (answer.text)
+        return {
+          questionId: answer.questionId,
+          text: answer.text,
+          source: answer.source === "manager" ? "manager" : "recruiter",
+          ...(input.skipReason ? { skipReason: input.skipReason } : {}),
+        };
+      return {
+        questionId: answer.questionId,
+        text: "",
+        source: "none",
+        ...(input.skipReason ? { skipReason: input.skipReason } : {}),
+      };
+    });
+    brief.managerRequest.answeredAt = now;
+    job!.roleBrief = roleBriefSchema.parse(brief);
   } else if (action.type === "company") {
     const p = employer();
     Object.assign(
