@@ -94,8 +94,8 @@ export function RoleQuestionsEditor({
             <div role="status">
               <h3>Czeka na managera</h3>
               <p>
-                Wysłane {formatDate(request.sentAt)}. Prototyp: link działa tylko w tej
-                przeglądarce.
+                Wysłane {formatDate(request.sentAt)}. W prototypie otwórz stronę managera w tej
+                samej karcie. Link nie przenosi scenariusza na inne urządzenie.
               </p>
             </div>
             <div className="record-actions">

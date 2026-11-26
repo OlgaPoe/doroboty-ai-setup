@@ -7,7 +7,7 @@ import { usePrototype } from "./store";
 import { publishedJobs } from "./model";
 import { cn } from "@/lib/utils";
 
-import peopleArt from "../../../docs/design-system/agent-kit/assets/people.png";
+import peopleArt from "@/assets/people.webp";
 
 const categories = [
   {

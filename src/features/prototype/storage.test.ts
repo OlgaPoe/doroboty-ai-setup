@@ -45,6 +45,15 @@ describe("browser persistence and recovery", () => {
       }).blocked,
     ).toBe(true);
   });
+  it("preserves a newer scenario when a stale tab tries to save", () => {
+    const storage = memory();
+    const stale = readState(storage);
+    const newer = initialState();
+    const saved = saveState(storage, newer, stale.raw);
+
+    expect(() => saveState(storage, stale.state, stale.raw)).toThrow("w innej karcie");
+    expect(storage.getItem(STORAGE_KEY)).toBe(saved);
+  });
   it("reports quota/write failure without altering the original", () => {
     const old = "old";
     const storage = {

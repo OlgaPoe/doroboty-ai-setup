@@ -27,6 +27,7 @@ export function readState(storage: StoragePort | null) {
         "Zapis w przeglądarce jest niedostępny. Zmiany zachowasz przez eksport w ustawieniach.",
       blocked: false,
       original: null,
+      raw: null,
     };
   let raw: string | null = null;
   try {
@@ -36,6 +37,7 @@ export function readState(storage: StoragePort | null) {
       issue: "",
       blocked: false,
       original: null,
+      raw,
     };
   } catch {
     return {
@@ -44,10 +46,19 @@ export function readState(storage: StoragePort | null) {
         "Nie udało się odczytać zapisu. Dotychczasowe dane nie zostaną nadpisane. Pobierz je w ustawieniach, a następnie zaimportuj poprawny plik lub zresetuj scenariusz.",
       blocked: true,
       original: raw,
+      raw,
     };
   }
 }
-export function saveState(storage: StoragePort | null, state: State) {
+export class StaleScenarioError extends Error {
+  constructor() {
+    super(
+      "Scenariusz zmienił się w innej karcie. Skopiuj niewysłaną treść i odśwież stronę przed ponowną próbą.",
+    );
+  }
+}
+
+export function saveState(storage: StoragePort | null, state: State, expected?: string | null) {
   if (!storage)
     throw new Error(
       "Zapis w przeglądarce jest niedostępny. Wyeksportuj zmiany przed zamknięciem strony.",
@@ -56,8 +67,12 @@ export function saveState(storage: StoragePort | null, state: State) {
   if (new TextEncoder().encode(raw).length > MAX_IMPORT_BYTES)
     throw new Error("Dane przekraczają 2 MB. Wyeksportuj je, aby zachować zmiany.");
   try {
+    if (expected !== undefined && storage.getItem(STORAGE_KEY) !== expected)
+      throw new StaleScenarioError();
     storage.setItem(STORAGE_KEY, raw);
-  } catch {
+    return raw;
+  } catch (error) {
+    if (error instanceof StaleScenarioError) throw error;
     throw new Error(
       "Nie udało się zapisać zmian w przeglądarce. Wyeksportuj dane przed zamknięciem strony.",
     );
